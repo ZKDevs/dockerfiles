@@ -1,4 +1,4 @@
-FROM python:3.8 AS base
+FROM python:3.12.0b4-slim AS base
 
 ARG WORKDIR=/app
 
