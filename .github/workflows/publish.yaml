@@ -9,22 +9,20 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        image:
+          # Add more image names as needed
+          - fast-api
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-
       - name: Build and push Docker images for all directories
-        run: |
-          for dir in */; do
-            service_name=$(basename "$dir")
-            image_name="${{ secrets.DOCKER_HUB_REPO }}-$service_name"
-            cd "$dir"
-            docker build -t "$image_name:${{ github.sha }}" .
-            docker tag "$image_name:${{ github.sha }}" "$image_name:latest"
-            docker push "$image_name:${{ github.sha }}"
-            docker push "$image_name:latest"
-            cd ..
-          done
+        run: | 
+          image_name="ZKDevs/${{ matrix.image }}"
+          docker build -t $image_name -f ${{ matrix.image }}/Dockerfile .
+          docker tag "$image_name:${{ github.sha }}" "$image_name:latest"
+          docker push ghcr.io/"$image_name:${{ github.sha }}"
+          docker push ghcr.io/"$image_name:latest"
