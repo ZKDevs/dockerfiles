@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and push Docker images for all directories
         run: | 
-          image_name="ZKDevs/${{ matrix.image }}"
+          image_name="zkdevs/${{ matrix.image }}"
           docker build -t $image_name -f ${{ matrix.image }}/Dockerfile .
           docker tag "$image_name:${{ github.sha }}" "$image_name:latest"
           docker push ghcr.io/"$image_name:${{ github.sha }}"
