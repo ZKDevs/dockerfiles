@@ -1,0 +1,48 @@
+name: Snyk Container
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '27 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  snyk:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_HUB_REPO: ${{ secrets.DOCKER_HUB_REPO }}
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    strategy:
+      matrix:
+        image:
+          # Add more image names as needed
+          - fast-api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t $DOCKER_HUB_REPO/${{ matrix.image }} -f ${{ matrix.image }}/Dockerfile .
+
+      - name: Check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        with:
+          image: $DOCKER_HUB_REPO/${{ matrix.image }}
+          args: --file=${{ matrix.image }}/Dockerfile --severity-threshold=high
+      
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
