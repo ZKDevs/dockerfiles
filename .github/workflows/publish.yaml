@@ -27,16 +27,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t zkdevs/${{ matrix.image }} -f ${{ matrix.image }}/Dockerfile .
+        run: docker build -t ghcr.io/zkdevs/${{ matrix.image }} -f ${{ matrix.image }}/Dockerfile .
 
       - name: Tag Docker image
         run: |
-          image_name="zkdevs/${{ matrix.image }}"
-          docker tag zkdevs/${{ matrix.image }}:latest "$image_name:${{ github.sha }}"
-          docker tag zkdevs/${{ matrix.image }}:latest "$image_name:latest"
+          image_name="ghcr.io/zkdevs/${{ matrix.image }}"
+          docker tag ghcr.io/zkdevs/${{ matrix.image }}:latest "$image_name:${{ github.sha }}"
+          docker tag ghcr.io/zkdevs/${{ matrix.image }}:latest "$image_name:latest"
 
       - name: Push Docker image
         run: |
-          image_name="zkdevs/${{ matrix.image }}"
+          image_name="ghcr.io/zkdevs/${{ matrix.image }}"
           docker push ghcr.io/"$image_name:${{ github.sha }}"
           docker push ghcr.io/"$image_name:latest"
