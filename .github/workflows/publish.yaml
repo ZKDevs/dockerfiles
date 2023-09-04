@@ -38,5 +38,5 @@ jobs:
       - name: Push Docker image
         run: |
           image_name="ghcr.io/zkdevs/${{ matrix.image }}"
-          docker push ghcr.io/"$image_name:${{ github.sha }}"
-          docker push ghcr.io/"$image_name:latest"
+          docker push "$image_name:${{ github.sha }}"
+          docker push "$image_name:latest"
