@@ -36,8 +36,7 @@ jobs:
 
       - name: Build Docker image
         run: 
-          cd ${{ matrix.image }}` | 
-          docker build -t zkdevs/${{ matrix.image }} .
+          cd ${{ matrix.image }} && docker build -t zkdevs/${{ matrix.image }} .
 
       - name: Check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
