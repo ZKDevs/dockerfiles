@@ -28,8 +28,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: cd ${{ matrix.image }} && docker build -t zkdevs/${{ matrix.image }} .
-
+        run:  cd ${{ matrix.image }} && docker build -t ghcr.io/zkdevs/${{ matrix.image }} .
       - name: Tag Docker image
         run: |
           image_name="ghcr.io/zkdevs/${{ matrix.image }}"
