@@ -1,6 +1,6 @@
-# Express README
+# Node Server README
 
-Make sure that your express server respects `$PORT`.
+This is a dockerfile that supports any node server that exposes itself on the port defined by the environment variable `$PORT` (e.g. Express, Koa, Hono, etc)
 
 Usage:
 ```
