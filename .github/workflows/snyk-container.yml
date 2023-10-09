@@ -29,6 +29,7 @@ jobs:
           # Add more image names as needed
           - fast-api
           - mongo
+          - node-server
 
     steps:
       - name: Checkout code
