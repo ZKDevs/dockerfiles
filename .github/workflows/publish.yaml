@@ -14,6 +14,7 @@ jobs:
         image:
           # Add more image names as needed
           - fast-api
+          - mongo
 
     steps:
       - name: Checkout code
@@ -27,8 +28,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/zkdevs/${{ matrix.image }} -f ${{ matrix.image }}/Dockerfile .
-
+        run:  cd ${{ matrix.image }} && docker build -t ghcr.io/zkdevs/${{ matrix.image }} .
       - name: Tag Docker image
         run: |
           image_name="ghcr.io/zkdevs/${{ matrix.image }}"
